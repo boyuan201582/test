@@ -6,4 +6,6 @@ echo 'second';
 echo 'test';
 echo 'zw';
 echo 'master';
-echo 'remote'
+echo 'remote';
+echo 'again first';
+
