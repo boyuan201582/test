@@ -1,0 +1,26 @@
+[ 2016-04-26T06:35:09+08:00 ] ::1 /ThinkPHP05/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000155s ]
+INFO: [ app_init ] --END-- [ RunTime:0.014986s ]
+
+[ 2016-04-26T06:35:10+08:00 ] ::1 /ThinkPHP05/index.php/Home/Index/code.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000407s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002748s ]
+
+[ 2016-04-26T06:35:28+08:00 ] ::1 /ThinkPHP05/index.php/Home/add
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000169s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001447s ]
+ERR: 无法加载控制器:Add
+
+[ 2016-04-26T06:35:43+08:00 ] ::1 /ThinkPHP05/index.php/Home/Index/add
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000153s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002244s ]
+
+[ 2016-04-26T06:36:01+08:00 ] ::1 /ThinkPHP05/index.php/Home/Index/inserts.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000140s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001494s ]
+

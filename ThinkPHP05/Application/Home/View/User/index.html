@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<table width="500" border="1">
+		<tr>
+			<td colspan="6">
+				<form><!-- 搜索默认请求当前页面，采用get方式请求 -->
+					用户名：<input type="text" name="username" value="{:I('get.username')}"><br>
+					年龄：<input type="text" name="start" value="{:I('get.start')}"> - 
+						<input type="text" name="end" value="{:I('get.end')}"><br>
+					性别：<select name="sex" id="">
+						<option value="">--请选择--</option>
+						<option value="1" {:I('get.sex')==1 ? 'selected' : ''}>男</option>
+						<option value="2"  {:I('get.sex')==2 ? 'selected' : ''}>女</option>
+					</select>
+					<input type="submit" value="提交">
+				</form>
+			</td>
+		</tr>
+		<tr>
+			<th>编号</th>
+			<th>姓名</th>
+			<th>年龄</th>
+			<th>性别</th>
+			<th>头像</th>
+			<th>操作</th>
+		</tr>
+		<foreach name="data" item="vo">
+		<tr>
+			<td>{$vo['id']}</td>
+			<td>{$vo['username']}</td>
+			<td>{$vo['age']}</td>
+			<td>{$vo['sex']==1 ? '男' : '女'}</td>
+			<td><img src="__PUBLIC__/{:empty($vo['pic']) ? 'default.jpg' : $vo['pic']}" width="50" alt=""></td>
+			<td>
+				<a href="">修改</a>
+				<a href="">刪除</a>
+			</td>
+		</tr>
+		</foreach>
+		<tr>
+			<td colspan="6">{$show}</td>
+		</tr>
+	</table>
+</body>
+</html>

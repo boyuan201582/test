@@ -1,0 +1,268 @@
+目录结构
+	Application：应用
+	Public：CSS，js和插件，上传文件的存放目录
+	ThinkPHP：ThinkPHP的核心目录
+	.htccess：
+	composer.json
+	index.php：单一入口文件
+	README.md：
+
+自动生成
+	前台和后台分别为一个模块
+	Application
+		├─Common         应用公共模块│  
+			├─Common      应用公共函数目录(function.php)│  
+			└─Conf        应用公共配置文件目录
+		├─Home           默认生成的Home模块│  
+			├─Conf        模块配置文件目录（config.php）│  
+			├─Common      模块函数公共目录(function.php)│  
+			├─Controller  模块控制器目录│  
+			├─Model       模块模型目录│  
+			└─View        模块视图文件目录
+		|─Admin           默认生成的Admin模块│  
+			├─Conf        模块配置文件目录│  
+			├─Common      模块函数公共目录│  
+			├─Controller  模块控制器目录│  
+			├─Model       模块模型目录│  
+			└─View        模块视图文件目录
+		├─Runtime        运行时目录│  (开发的过程中，就删除runtime目录)
+			├─Cache       模版缓存目录│  
+			├─Data        数据目录│  
+			├─Logs        日志目录│  
+			└─Temp        缓存目录
+
+apache默认访问的是index.php index.html index.htm
+
+名称 描述 
+应用 	基于同一个入口文件访问的项目我们称之为一个应用。 
+模块 	一个应用下面可以包含多个模块，每个模块在应用目录下面都是一个独立的子目录。 
+控制器 	每个模块可以包含多个控制器，一个控制器通常体现为一个控制器类。(功能) 
+操作 	每个控制器类可以包含多个操作方法，也可能是绑定的某个操作类，每个操作是URL访问的最小单元（控制器中方法）
+
+ThinkPHP的流程
+1.用户请求index.php，知道模块名，控制器名，方法名
+
+2.加载配置文件，生成Application目录结构
+
+3.再加载配置(config.php)和函数(function.php)
+
+4.解析URL（index.php/Home/Index/index），定位到对应的控制器
+
+5.调用模板引擎，输出模板
+
+6.结束
+
+概念
+应用： 基于同一个入口文件访问的项目我们称之为一个应用。
+模块： 一个应用下面可以包含多个模块，每个模块在应用目录下面都是一个独立的子目录。
+控制器： 每个模块可以包含多个控制器，一个控制器通常体现为一个控制器类。
+操作： 每个控制器类可以包含多个操作方法，也可能是绑定的某个操作类，每个操作是URL访问的最小单元
+
+URL：网站目录/index.php/模块/控制器/操作/参数
+
+配置文件
+'SHOW_PAGE_TRACE'=>true:开启TP调试栏
+'URL_HTML_SUFFIX'=>'shtml'：伪静态后缀
+'DB_FIELDS_CACHE'=>false：// 关闭字段缓存（调试阶段关闭，上线开启）
+
+//数据库配置信息
+'DB_TYPE' => 'mysql', // 数据库类型
+'DB_HOST' => 'localhost', // 服务器地址
+'DB_NAME' => 'thinkphp', // 数据库名
+'DB_USER' => 'root', // 用户名
+'DB_PWD' => '123456', // 密码
+'DB_PORT' => 3306, // 端口
+'DB_PREFIX' => 'think_', // 数据库表前缀
+'DB_CHARSET'=> 'utf8', // 字符集
+'DB_DEBUG' => TRUE, // 数据库调试模式 开启后可以记录SQL日志 3.2.3新增
+
+//PDO连接方式
+'DB_TYPE' => 'pdo', // 数据库类型
+'DB_USER' => 'root', // 用户名
+'DB_PWD' => '', // 密码
+'DB_PREFIX' => 'think_', // 数据库表前缀
+'DB_DSN' => 'mysql:host=localhost;dbname=thinkphp;charset=utf8'
+
+大写字母函数
+1.U('地址表达式',['参数'],['伪静态后缀'],['显示域名'])：生成URL
+U('Index/index#one?id=3',array('name'=>'zhangsan', 'html'))
+2.I('变量类型.变量名/修饰符',['默认值'],['过滤方法'],['额外数据源'])
+I('get.'):获取所有get数据
+I('get.name'):获取name数据
+I('get.id',1):获取get中的ID值，没有设置为1
+I('get.id','','intval'):ID必须为整型
+3.//实例化模型
+$User = D('User'); // 相当于 $User = new \Home\Model\UserModel();
+4.// 使用M方法实例化
+$User = M('User'); // 相当于 $User = new \Think\Model('User');
+知识点：
+1.ajax返回
+$this->ajaxReturn(字符串｜数组)：
+2.跳转和重定向
+$this->success('提示信息', U('Index/index'), 3);
+$this->error('提示信息',U('index/index'));
+
+$this->redirect(U('Index/index'),'参数',3,页面提示信息);
+redirect(U('Index/index',3,页面提示信息))
+3.请求类型
+IS_AJAX
+IS_POST
+IS_GET
+4.系统变量
+{$Think.get.id}
+{$Think.post.name}
+{$Think.session.admin}
+{$Think.cookie.num}
+
+{$Think.const.MODULE_NAME}
+{$Think.config.DB_DSN}
+
+模型
+1.连贯操作
+where(字符串条件|数组):
+字符串：id=3 and name="zhangsan"
+数组：
+相等: $where['name'] = 'zhangsan';
+不相等: $where['age'] = array('NEQ', 20);
+大于: $where['age'] = array('GT', 20);
+小于: $where['age'] = array('LT', 20);
+LIKE: $where['name'] = array('like','%thinkphp%');
+between:$where['id'] = array('between','1,8');
+$where['id'] = array('not between',array('1','8'));
+in: $where['id'] = array('in','1,5,8');
+$where['id'] = array('not in',array('1','5','8'));
+
+limit(3,5):
+order('age desc'):
+field('id,name,age,sex'):
+
+2.CURD操作
+$user = M('user');
+数据创建：$user->create()
+数据添加：$user->add()
+数据修改：$user->save()
+数据删除：$user->delete($id)
+
+查询一条数据：find()
+查询多条数据：select()
+
+查询总条数：count()
+模版
+1.使用函数
+{:U('Index/index')}
+{:date('Y-m-d')}
+2.默认值
+{$user.nickname|default="这家伙很懒，什么也没留下"}
+3.模版继承
+<block name="title"></block>
+<extend name="Public/base" />
+4.三元运算符
+{$info['status']?$info['msg']:$info['error']}
+5.包含文件
+<include file="Public/header" /> // 包含头部模版header
+6.内置标签
+<volist name="list" id="vo">
+{$vo.id}:{$vo.name}<br/>
+</volist>
+
+<foreach name="list" item="vo" key="k" >
+{$k}|{$vo}
+</foreach>
+
+<if condition="($name eq 1) OR ($name gt 100) "> value1
+<elseif condition="$name eq 2"/>value2
+<else /> value3
+</if>
+
+7.模版替换
+__MODULE__：会替换成当前模块的URL地址 （不含域名）
+__CONTROLLER__（__或者__URL__ 兼容考虑）： 会替换成当前控制器的URL地址（不含域名）
+__ACTION__：会替换成当前操作的URL地址 （不含域名）
+__SELF__： 会替换成当前的页面URL
+__PUBLIC__：会被替换成当前网站的公共目录 通常是 /Public/
+
+session();
+session('admin')
+session('admin.username');
+
+session('admin',null)
+session(null)
+
+session('?username'):true|false
+
+session('[destroy]')
+
+cookie()
+cookie('admin','zhangsan',3600)
+
+cookie('admin',null);
+
+扩展
+1.分页类
+$page = new \Think\Page('数据总条数', '每页显示数据条数');
+获取分页代码：$page->show()
+limit条件：limit($page->firstRow,$page->listRows)
+page条件：page(I('get.p',0).',每页显示数据条数')
+
+// 分页类配置
+$page->setConfig('header','共 %TOTAL_ROW% 条记录');
+$page->setConfig('prev','上一页');
+$page->setConfig('next','下一页');
+// 必须页码够了才会显示
+$page->setConfig('first','首页');
+$page->setConfig('last','尾页');
+
+$page->setConfig('theme', "共 %TOTAL_ROW% 条记录 %FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END%");
+2.验证码
+// 验证码配置
+$config = array(
+'fontSize' => 30, // 验证码字体大小
+'length' => 4, // 验证码位数
+'useNoise' => false, // 关闭验证码杂点
+'useImgBg' => true, // 使用背景图
+// 'useZh' => true, // 使用中文
+'codeSet' => '012345678',//使用数字做为验证码
+);
+
+// 生成验证码
+$Verify = new \Think\Verify($config);
+$Verify->entry();
+
+// 验证码验证
+$verify->check($code, $id);
+
+3.文件上传
+$config = array(
+'maxSize' => 3145728,
+'rootPath' => './Uploads/',
+'savePath' => '',
+'saveName' => array('uniqid',''),
+'exts' => array('jpg', 'gif', 'png', 'jpeg'),
+'autoSub' => true,
+'subName' => array('date','Ymd'),
+);
+$upload = new \Think\Upload($config);// 实例化上传类
+// 上传文件
+$info = $upload->upload(); // 多文件上传
+$info = $upload->uploadOne($_FILES['photo1']); // 单文件上传
+if(!$info) {// 上传错误提示错误信息
+$this->error($upload->getError());
+}else{// 上传成功
+$this->success('上传成功！');
+}
+4.图像处理
+$image = new \Think\Image();
+
+裁剪图片：
+$image->open('./1.jpg');
+//将图片裁剪为400x400并保存为corp.jpg
+$image->crop(400, 400)->save('./crop.jpg');
+
+// 缩略图
+$image->open('./1.jpg');
+// 按照原图的比例生成一个最大为150*150的缩略图并保存为thumb.jpg
+$image->thumb(150, 150)->save('./thumb.jpg');
+
+// 添加水印
+// 给原图添加水印并保存为water_o.gif（需要重新打开原图）
+$image->open('./1.jpg')->water('./logo.png',水印位置,透明度)->save("water_o.gif");
