@@ -10,4 +10,5 @@ echo 'remote';
 echo 'again first';
 echo 'sunday';
 echo 'diff';
+echo 'master';
 
