@@ -4,3 +4,5 @@ echo '123';
 echo 'first';
 echo 'second';
 echo 'test';
+echo 'zw slave';
+
