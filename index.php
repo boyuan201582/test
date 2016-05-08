@@ -12,5 +12,6 @@ echo 'sunday';
 echo 'diff';
 echo 'master';
 echo 'zw slave';
+echo 'my dev branch';
 
 
